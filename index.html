@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Culé Sin Filtros | Opinión, Actualidad Barça y Fútbol Mundial</title>
+  <meta name="description" content="El Barça y el fútbol contados sin anestesia. Análisis tácticos, reacciones post-partido, fichajes y debates sin filtros." />
+  
+  <!-- Tailwind CSS vía CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Oswald (Titulares deportivos) e Inter (Cuerpo de texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Configuración personalizada de Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Oswald', 'sans-serif'],
+          },
+          colors: {
+            cule: {
+              dark: '#0A0D14',
+              card: '#111623',
+              blue: '#004D98',
+              garnet: '#A50044',
+              gold: '#EDBB00',
+            }
+          },
+          animation: {
+            'marquee': 'marquee 30s linear infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Estilos adicionales para efectos visuales, glassmorphism y animaciones -->
+  <style>
+    body {
+      background-color: #0A0D14;
+      color: #FFFFFF;
+      overflow-x: hidden;
+    }
+
+    /* Efecto cristal esmerilado */
+    .glass-panel {
+      background: rgba(17, 22, 35, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Degradado icónico azulgrana */
+    .bg-blaugrana-gradient {
+      background: linear-gradient(135deg, #004D98 0%, #A50044 100%);
+    }
+
+    .text-blaugrana-gradient {
+      background: linear-gradient(90deg, #3B82F6 0%, #EC4899 50%, #EDBB00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Brillo neón para el marco de perfil */
+    .neon-blaugrana-glow {
+      box-shadow: -8px -8px 25px rgba(0, 77, 152, 0.55), 8px 8px 25px rgba(165, 0, 68, 0.55);
+    }
+
+    /* Pausar el ticker de noticias al pasar el ratón */
+    .ticker-container:hover .animate-marquee {
+      animation-play-state: paused;
+    }
+
+    /* Animaciones suaves de aparición al hacer scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-cule-garnet selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- 1. NAVBAR FIJA (NAVIGATION BAR)                                       -->
+  <!-- ===================================================================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo de Marca -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-blaugrana-gradient p-[2px] shadow-lg group-hover:scale-105 transition-transform">
+            <div class="w-full h-full bg-cule-dark rounded-[10px] flex items-center justify-center font-display font-bold text-lg tracking-wider text-cule-gold">
+              CSF
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-xl sm:text-2xl tracking-wide uppercase leading-none text-white">
+              CULÉ <span class="text-cule-gold">SIN FILTROS</span>
+            </span>
+            <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-semibold">
+              Barça & Fútbol Real
+            </span>
+          </div>
+        </a>
+
+        <!-- Enlaces Desktop -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+          <a href="#redes" class="hover:text-white transition-colors">Mis Redes</a>
+          <a href="#debates" class="hover:text-white transition-colors">Takes Sin Filtros</a>
+          <a href="#sobre-mi" class="hover:text-white transition-colors">Sobre Mí</a>
+          <a href="#colaboraciones" class="hover:text-cule-gold transition-colors">Colaboraciones</a>
+        </nav>
+
+        <!-- Botón CTA Principal + Menú Móvil -->
+        <div class="flex items-center gap-3">
+          <a href="#redes" class="bg-blaugrana-gradient hover:opacity-90 text-white font-display uppercase tracking-wider text-sm sm:text-base px-5 py-2.5 rounded-full font-semibold shadow-lg shadow-cule-garnet/30 transition-all hover:scale-105">
+            Sígueme
+          </a>
+          
+          <!-- Botón Hamburguesa Móvil -->
+          <button id="mobile-menu-btn" aria-label="Abrir menú" class="md:hidden p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú Desplegable Móvil -->
+    <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10 px-4 pt-3 pb-5 space-y-2">
+      <a href="#redes" class="block px-3 py-2.5 rounded-xl text-base font-medium text-gray-200 hover:bg-white/10">Mis Redes</a>
+      <a href="#debates" class="block px-3 py-2.5 rounded-xl text-base font-medium text-gray-200 hover:bg-white/10">Takes Sin Filtros</a>
+      <a href="#sobre-mi" class="block px-3 py-2.5 rounded-xl text-base font-medium text-gray-200 hover:bg-white/10">Sobre Mí</a>
+      <a href="#colaboraciones" class="block px-3 py-2.5 rounded-xl text-base font-medium text-cule-gold hover:bg-white/10">Colaboraciones & Media Kit</a>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 2. HERO SECTION (PORTADA PRINCIPAL)                                   -->
+  <!-- ===================================================================== -->
+  <section class="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden">
+    <!-- Luces ambientales de fondo (Azul y Grana) -->
+    <div class="absolute top-10 -left-32 w-96 h-96 bg-cule-blue/30 rounded-full blur-[130px] pointer-events-none"></div>
+    <div class="absolute bottom-0 -right-32 w-96 h-96 bg-cule-garnet/30 rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Columna Izquierda: Titular, Bio corta y Métricas -->
+        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+          <!-- Badge Dinámico -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold tracking-wide text-cule-gold">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+            <span>OPINIÓN SIN FILTROS • ACTUALIDAD FC BARCELONA</span>
+          </div>
+
+          <!-- Titular Principal -->
+          <h1 class="font-display font-bold text-4xl sm:text-6xl lg:text-7xl uppercase tracking-tight leading-[1.05]">
+            El Barça y el fútbol, <br class="hidden sm:inline" />
+            <span class="text-blaugrana-gradient">contados sin anestesia.</span>
+          </h1>
+
+          <!-- Subtítulo -->
+          <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Aquí no venimos a quedar bien con nadie. Reacciones en caliente tras cada partido, análisis tácticos al grano, mercado de fichajes y toda la verdad sobre el planeta fútbol.
+          </p>
+
+          <!-- Botones de Acción (CTAs) -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#redes" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-blaugrana-gradient text-white font-display uppercase tracking-wider font-semibold text-lg shadow-xl shadow-cule-blue/25 hover:scale-105 transition-transform flex items-center justify-center gap-2">
+              <span>Unirme a la comunidad</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+            </a>
+            <a href="#debates" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass-panel hover:bg-white/10 text-white font-display uppercase tracking-wider font-semibold text-lg transition-colors flex items-center justify-center gap-2">
+              <span>Leer últimos takes</span>
+            </a>
+          </div>
+
+          <!-- Contadores de Comunidad (Edita los números fácilmente aquí) -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 max-w-xl mx-auto lg:mx-0">
+            <div>
+              <p class="font-display font-bold text-2xl sm:text-4xl text-white">+150K</p>
+              <p class="text-xs sm:text-sm text-gray-400">Seguidores Totales</p>
+            </div>
+            <div>
+              <p class="font-display font-bold text-2xl sm:text-4xl text-cule-gold">+2.5M</p>
+              <p class="text-xs sm:text-sm text-gray-400">Vistas Mensuales</p>
+            </div>
+            <div>
+              <p class="font-display font-bold text-2xl sm:text-4xl text-white">100%</p>
+              <p class="text-xs sm:text-sm text-gray-400">Sin Censura</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Avatar / Foto del Creador con Marco Neón Azulgrana -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+            <!-- Anillo exterior degradado -->
+            <div class="w-full h-full rounded-3xl p-1.5 bg-blaugrana-gradient neon-blaugrana-glow rotate-2 hover:rotate-0 transition-transform duration-500">
+              <div class="w-full h-full bg-cule-card rounded-[20px] overflow-hidden relative group">
+                <!-- REEMPLAZA ESTE SRC POR TU FOTO REAL EN GITHUB (ej. ./assets/perfil.jpg) -->
+                <img 
+                  src="https://placehold.co/600x600/111623/EDBB00?text=TU+FOTO+AQUI%0A@culesinfiltros" 
+                  alt="Culé Sin Filtros - Creador de Contenido" 
+                  onerror="this.src='https://placehold.co/600x600/004D98/FFFFFF?text=CULE+SIN+FILTROS'"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                
+                <!-- Etiqueta flotante inferior dentro de la tarjeta -->
+                <div class="absolute bottom-3 left-3 right-3 glass-panel rounded-xl p-3 flex items-center justify-between">
+                  <div>
+                    <p class="font-display font-bold text-sm uppercase tracking-wider text-white">@culesinfiltros</p>
+                    <p class="text-xs text-gray-300">Creador & Analista Deportivo</p>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg bg-cule-gold text-cule-dark font-bold text-xs uppercase">
+                    VERIFICADO
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Badge flotante superior derecho -->
+            <div class="absolute -top-4 -right-4 glass-panel px-4 py-2 rounded-2xl border border-cule-gold/40 shadow-xl flex items-center gap-2">
+              <span class="text-lg">🔥</span>
+              <span class="font-display font-bold text-sm uppercase tracking-wider text-cule-gold">Post-Partido Live</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 3. BARRA DE ÚLTIMA HORA / TICKER HORIZONTAL ANIMADO                   -->
+  <!-- ===================================================================== -->
+  <div class="bg-blaugrana-gradient border-y border-white/15 py-2.5 overflow-hidden ticker-container relative">
+    <div class="flex items-center">
+      <!-- Etiqueta fija a la izquierda -->
+      <div class="bg-cule-dark text-cule-gold font-display font-bold uppercase tracking-wider text-xs sm:text-sm px-4 py-1.5 ml-3 rounded-lg z-10 shrink-0 shadow-md flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cule-gold animate-pulse"></span>
+        ÚLTIMA HORA
+      </div>
+
+      <!-- Cinta deslizante infinita (duplicada para bucle continuo sin cortes) -->
+      <div class="overflow-hidden whitespace-nowrap flex-1 ml-4">
+        <div class="inline-block animate-marquee text-xs sm:text-sm font-semibold tracking-wide text-white">
+          <span class="mx-6">⚽ LA MASÍA SIGUE MANDANDO: ¿EL MEJOR CENTRO DEL CAMPO DE EUROPA?</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🚨 MERCADO DE FICHAJES: LO QUE NADIE TE CUENTA SOBRE EL FAIR PLAY FINANCIERO</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🔥 DIRECTO POST-PARTIDO ESTA NOCHE EN TIKTOK Y YOUTUBE AL PITIDO FINAL</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🏆 CHAMPIONS LEAGUE: ANÁLISIS SIN FILTROS DE LOS RIVALES DEL BARÇA</span>
+          <span class="text-cule-gold">•</span>
+          <!-- Repetición exacta para efecto infinito -->
+          <span class="mx-6">⚽ LA MASÍA SIGUE MANDANDO: ¿EL MEJOR CENTRO DEL CAMPO DE EUROPA?</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🚨 MERCADO DE FICHAJES: LO QUE NADIE TE CUENTA SOBRE EL FAIR PLAY FINANCIERO</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🔥 DIRECTO POST-PARTIDO ESTA NOCHE EN TIKTOK Y YOUTUBE AL PITIDO FINAL</span>
+          <span class="text-cule-gold">•</span>
+          <span class="mx-6">🏆 CHAMPIONS LEAGUE: ANÁLISIS SIN FILTROS DE LOS RIVALES DEL BARÇA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 4. HUB DE REDES SOCIALES (DÓNDE ENCONTRARME)                          -->
+  <!-- ===================================================================== -->
+  <section id="redes" class="py-20 sm:py-28 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Encabezado de Sección -->
+      <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+        <span class="text-cule-gold font-display uppercase tracking-widest text-sm font-semibold">Ecosistema Digital</span>
+        <h2 class="font-display font-bold text-3xl sm:text-5xl uppercase mt-2">
+          Sigue el debate en <span class="text-blaugrana-gradient">todas mis redes</span>
+        </h2>
+        <p class="text-gray-400 mt-4 text-sm sm:text-base">
+          Cada plataforma tiene su propio estilo. Elige dónde quieres vivir la previa, el minuto a minuto y las tertulias más calientes.
+        </p>
+      </div>
+
+      <!-- Grid de Tarjetas Sociales (Edita los href="#" con tus enlaces reales) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+        
+        <!-- 1. TIKTOK -->
+        <a href="https://tiktok.com/@culesinfiltros" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 border border-white/10 hover:border-pink-500/50 group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- SVG TikTok -->
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+              </div>
+              <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/5 text-gray-300">Clips Virales</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl uppercase text-white">TikTok</h3>
+            <p class="text-cule-gold text-sm font-medium mb-3">@culesinfiltros</p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Reacciones post-partido en caliente, opiniones rápidas de 60 segundos y respuestas directas a comentarios polémicos.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-white group-hover:text-pink-400 transition-colors">
+            <span>Seguir en TikTok</span>
+            <span>↗</span>
+          </div>
+        </a>
+
+        <!-- 2. YOUTUBE -->
+        <a href="https://youtube.com/@culesinfiltros" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 border border-white/10 hover:border-red-500/50 group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-red-600/15 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- SVG YouTube -->
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </div>
+              <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/5 text-gray-300">Análisis Profundo</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl uppercase text-white">YouTube</h3>
+            <p class="text-cule-gold text-sm font-medium mb-3">@culesinfiltros</p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Pizarra táctica, análisis a fondo de fichajes, especiales de Champions League y tertulias semanales con invitados.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-white group-hover:text-red-400 transition-colors">
+            <span>Suscribirse al canal</span>
+            <span>↗</span>
+          </div>
+        </a>
+
+        <!-- 3. X (TWITTER) -->
+        <a href="https://x.com/culesinfiltros" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 border border-white/10 hover:border-blue-400/50 group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-white/10 text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- SVG X / Twitter -->
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </div>
+              <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/5 text-gray-300">Minuto a Minuto</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl uppercase text-white">X (Twitter)</h3>
+            <p class="text-cule-gold text-sm font-medium mb-3">@culesinfiltros</p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Hilos de opinión, salseo futbolero en tiempo real, datos estadísticos al instante y debate directo con la comunidad.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">
+            <span>Seguir en X</span>
+            <span>↗</span>
+          </div>
+        </a>
+
+        <!-- 4. INSTAGRAM -->
+        <a href="https://instagram.com/culesinfiltros" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 border border-white/10 hover:border-purple-500/50 group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- SVG Instagram -->
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+              <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/5 text-gray-300">Reels & Stories</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl uppercase text-white">Instagram</h3>
+            <p class="text-cule-gold text-sm font-medium mb-3">@culesinfiltros</p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Encuestas en historias, calificaciones 1x1 tras cada jornada, Reels y el día a día desde el estadio.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">
+            <span>Seguir en Instagram</span>
+            <span>↗</span>
+          </div>
+        </a>
+
+        <!-- 5. TWITCH / KICK (DIRECTOS) -->
+        <a href="https://twitch.tv/culesinfiltros" target="_blank" rel="noopener noreferrer" class="glass-panel rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 border border-white/10 hover:border-emerald-500/50 group flex flex-col justify-between sm:col-span-2 lg:col-span-2">
+          <div>
+            <div class="flex items-center justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <!-- SVG Streaming / Live -->
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Directos & Watchalong
+              </span>
+            </div>
+            <h3 class="font-display font-bold text-2xl uppercase text-white">Twitch & Kick Live</h3>
+            <p class="text-cule-gold text-sm font-medium mb-3">@culesinfiltros</p>
+            <p class="text-gray-400 text-sm leading-relaxed max-w-2xl">
+              Vive los partidos del Barça y las grandes noches de Champions conmigo en directo. Watchalongs sin censura, chat abierto para que entres a debatir y cierres de mercado hasta la madrugada.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">
+            <span>Entrar al canal de directos</span>
+            <span>↗</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 5. ÚLTIMOS DEBATES / TAKES SIN FILTROS (CON FILTRO INTERACTIVO JS)    -->
+  <!-- ===================================================================== -->
+  <section id="debates" class="py-20 sm:py-28 bg-cule-card/60 border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Cabecera y Botones de Filtro -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal">
+        <div>
+          <span class="text-cule-gold font-display uppercase tracking-widest text-sm font-semibold">Editorial & Polémica</span>
+          <h2 class="font-display font-bold text-3xl sm:text-5xl uppercase mt-2">
+            Takes <span class="text-blaugrana-gradient">Sin Filtros</span>
+          </h2>
+        </div>
+
+        <!-- Botones de Categoría (Controlados por JS) -->
+        <div class="flex flex-wrap gap-2" id="filter-buttons">
+          <button data-filter="todos" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider bg-blaugrana-gradient text-white transition-all">
+            Todos
+          </button>
+          <button data-filter="barca" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider bg-white/5 text-gray-300 hover:bg-white/10 transition-all">
+            Barça & La Masía
+          </button>
+          <button data-filter="fichajes" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider bg-white/5 text-gray-300 hover:bg-white/10 transition-all">
+            Mercado de Fichajes
+          </button>
+          <button data-filter="opinion" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider bg-white/5 text-gray-300 hover:bg-white/10 transition-all">
+            Opinión Caliente
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid de Artículos / Takes -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="takes-grid">
+        
+        <!-- Tarjeta 1 -->
+        <article data-category="barca" class="take-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10 hover:border-cule-blue/60 transition-all duration-300">
+          <div>
+            <!-- Cabecera visual con degradado -->
+            <div class="h-3 bg-cule-blue"></div>
+            <div class="p-6">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="px-3 py-1 rounded-lg bg-cule-blue/20 text-blue-300 text-xs font-bold uppercase tracking-wider">
+                  La Masía
+                </span>
+                <span class="text-xs text-gray-400">Hace 2 días</span>
+              </div>
+              <h3 class="font-display font-bold text-2xl uppercase leading-snug text-white mb-3">
+                La Masía no es un recurso de emergencia: es la única identidad que nos hace ganar
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Cada vez que el club mira fuera buscando soluciones millonarias, los chavales de casa demuestran que tienen más personalidad y fútbol en las botas que muchos fichajes estrella.
+              </p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs font-semibold text-cule-gold">🔥 +420 comentarios en X</span>
+            <a href="https://x.com/culesinfiltros" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white hover:text-cule-gold transition-colors">
+              Debatir →
+            </a>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2 -->
+        <article data-category="fichajes" class="take-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10 hover:border-cule-garnet/60 transition-all duration-300">
+          <div>
+            <div class="h-3 bg-cule-garnet"></div>
+            <div class="p-6">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="px-3 py-1 rounded-lg bg-cule-garnet/25 text-pink-300 text-xs font-bold uppercase tracking-wider">
+                  Mercado de Fichajes
+                </span>
+                <span class="text-xs text-gray-400">Hace 4 días</span>
+              </div>
+              <h3 class="font-display font-bold text-2xl uppercase leading-snug text-white mb-3">
+                Basta de vender humo con fichajes imposibles: lo que realmente necesita la plantilla
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Menos cromos repetidos en ataque y más músculo táctico y fondo de armario. Analizamos con números reales qué posiciones son prioritarias este verano sin hipotecar el futuro.
+              </p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs font-semibold text-cule-gold">🎥 Vídeo completo en YouTube</span>
+            <a href="https://youtube.com/@culesinfiltros" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white hover:text-cule-gold transition-colors">
+              Ver análisis →
+            </a>
+          </div>
+        </article>
+
+        <!-- Tarjeta 3 -->
+        <article data-category="opinion" class="take-card glass-panel rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10 hover:border-cule-gold/60 transition-all duration-300">
+          <div>
+            <div class="h-3 bg-cule-gold"></div>
+            <div class="p-6">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="px-3 py-1 rounded-lg bg-cule-gold/20 text-cule-gold text-xs font-bold uppercase tracking-wider">
+                  Champions & Opinión
+                </span>
+                <span class="text-xs text-gray-400">Esta semana</span>
+              </div>
+              <h3 class="font-display font-bold text-2xl uppercase leading-snug text-white mb-3">
+                El doble rasero arbitral en Europa y LaLiga ya canta demasiado: hablemos claro
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                No es llorar, es poner las jugadas una al lado de la otra. Cuando el criterio cambia según el escudo de la camiseta, el espectáculo pierde toda credibilidad.
+              </p>
+            </div>
+          </div>
+          <div class="px-6 pb-6 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs font-semibold text-cule-gold">⚡ Viral en TikTok (+350K)</span>
+            <a href="https://tiktok.com/@culesinfiltros" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-white hover:text-cule-gold transition-colors">
+              Ver clip →
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 6. SOBRE MÍ & COLABORACIONES (MEDIA KIT PARA MARCAS)                  -->
+  <!-- ===================================================================== -->
+  <section id="sobre-mi" class="py-20 sm:py-28 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+        
+        <!-- Bloque Izquierdo: Sobre Mí -->
+        <div class="lg:col-span-6 glass-panel rounded-3xl p-8 sm:p-10 flex flex-col justify-between reveal">
+          <div>
+            <span class="text-cule-gold font-display uppercase tracking-widest text-sm font-semibold">La voz detrás del micro</span>
+            <h2 class="font-display font-bold text-3xl sm:text-4xl uppercase mt-2 mb-6">
+              ¿Quién es <span class="text-white">Culé Sin Filtros</span>?
+            </h2>
+            <div class="space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
+              <p>
+                Nací respirando fútbol y sufriendo y disfrutando cada noche azulgrana como uno más en la grada. Cansado del periodismo de bufanda institucional y de los tertulianos que solo buscan el clickbait vacío, decidí encender la cámara y decir lo que piensa el aficionado de verdad.
+              </p>
+              <p>
+                Hoy somos una comunidad gigante que no se calla ni una: celebramos cuando se juega bien, señalamos cuando se falla y analizamos el fútbol mundial con pasión, datos y cero postureo.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-3">
+            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 text-xs font-semibold text-gray-200">🎙️ Tertuliano & Creador</span>
+            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 text-xs font-semibold text-gray-200">📊 Análisis Táctico</span>
+            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 text-xs font-semibold text-gray-200">🔥 Comunidad Activa</span>
+          </div>
+        </div>
+
+        <!-- Bloque Derecho: Colaboraciones & Patrocinios -->
+        <div id="colaboraciones" class="lg:col-span-6 rounded-3xl p-[1px] bg-blaugrana-gradient reveal">
+          <div class="w-full h-full bg-cule-dark rounded-[23px] p-8 sm:p-10 flex flex-col justify-between">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-cule-gold/15 text-cule-gold text-xs font-bold uppercase tracking-wider mb-4">
+                Media Kit & Patrocinios
+              </div>
+              <h2 class="font-display font-bold text-3xl sm:text-4xl uppercase text-white mb-4">
+                ¿Trabajamos juntos?
+              </h2>
+              <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
+                Conecta tu marca con una audiencia futbolera altamente fiel, joven y participativa en España y Latinoamérica. Ideal para:
+              </p>
+
+              <ul class="space-y-3 text-sm text-gray-200 mb-8">
+                <li class="flex items-center gap-3">
+                  <span class="w-6 h-6 rounded-full bg-cule-blue/30 text-blue-300 flex items-center justify-center text-xs font-bold">✓</span>
+                  <span>Apps deportivas, plataformas de streaming y videojuegos (EA FC, etc.)</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-6 h-6 rounded-full bg-cule-garnet/30 text-pink-300 flex items-center justify-center text-xs font-bold">✓</span>
+                  <span>Marcas de ropa deportiva, equipamiento y lifestyle urbano</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-6 h-6 rounded-full bg-cule-gold/20 text-cule-gold flex items-center justify-center text-xs font-bold">✓</span>
+                  <span>Eventos presenciales, watchalongs patrocinados y campañas embajador</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Caja de Contacto con Copiado Rápido al Portapapeles -->
+            <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-white/10">
+              <p class="text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2">Contacto directo para marcas y prensa:</p>
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <!-- EDITA TU EMAIL REAL AQUÍ Y EN EL SCRIPT -->
+                <code id="contact-email" class="text-cule-gold font-mono text-sm sm:text-base font-semibold select-all">
+                  contacto@culesinfiltros.com
+                </code>
+                <button 
+                  id="copy-email-btn"
+                  type="button"
+                  class="px-4 py-2.5 rounded-xl bg-white text-cule-dark hover:bg-cule-gold font-display uppercase tracking-wider text-sm font-bold transition-colors flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                  <span>Copiar Email</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 7. FOOTER MINIMALISTA & AVISO LEGAL                                   -->
+  <!-- ===================================================================== -->
+  <footer class="border-t border-white/10 bg-[#07090E] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Logo Footer -->
+        <div class="text-center md:text-left">
+          <span class="font-display font-bold text-xl uppercase tracking-wide text-white">
+            CULÉ <span class="text-cule-gold">SIN FILTROS</span>
+          </span>
+          <p class="text-xs text-gray-500 mt-1">
+            © <span id="current-year"></span> Culé Sin Filtros. Todos los derechos reservados.
+          </p>
+        </div>
+
+        <!-- Enlaces Rápidos -->
+        <div class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-gray-400">
+          <a href="#" class="hover:text-white transition-colors">Inicio</a>
+          <a href="#redes" class="hover:text-white transition-colors">Redes Sociales</a>
+          <a href="#debates" class="hover:text-white transition-colors">Takes</a>
+          <a href="#colaboraciones" class="hover:text-cule-gold transition-colors">Patrocinios</a>
+        </div>
+      </div>
+
+      <!-- Disclaimer obligatorio para cuentas fan/creadores independientes -->
+      <div class="mt-8 pt-6 border-t border-white/5 text-center">
+        <p class="text-xs text-gray-500 max-w-3xl mx-auto leading-relaxed">
+          Aviso: Este sitio web pertenece a un creador de contenido independiente y cuenta de opinión deportiva. No está afiliado, asociado, autorizado ni respaldado oficialmente por el FC Barcelona ni por ninguna entidad deportiva oficial.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- NOTIFICACIÓN FLOTANTE (TOAST) AL COPIAR EMAIL                         -->
+  <!-- ===================================================================== -->
+  <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-panel border border-cule-gold/50 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+      <span class="w-6 h-6 rounded-full bg-cule-gold text-cule-dark flex items-center justify-center font-bold text-sm">✓</span>
+      <div>
+        <p class="font-display uppercase tracking-wider text-sm font-bold text-cule-gold">¡Email copiado!</p>
+        <p class="text-xs text-gray-300">Listo para pegar y enviarme tu propuesta.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT VANILLA (INTERACTIVIDAD, FILTROS Y ANIMACIONES)            -->
+  <!-- ===================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1. Año actual automático en el Footer
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+
+      // 2. Menú móvil desplegable
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Cerrar menú móvil al hacer clic en cualquier enlace
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+
+      // 3. Filtro interactivo de "Takes Sin Filtros"
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const takeCards = document.querySelectorAll('.take-card');
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Actualizar estilos de botones activos
+          filterButtons.forEach(b => {
+            b.classList.remove('bg-blaugrana-gradient', 'text-white');
+            b.classList.add('bg-white/5', 'text-gray-300');
+          });
+          btn.classList.remove('bg-white/5', 'text-gray-300');
+          btn.classList.add('bg-blaugrana-gradient', 'text-white');
+
+          const selectedCategory = btn.getAttribute('data-filter');
+
+          // Mostrar u ocultar tarjetas según la categoría elegida
+          takeCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            if (selectedCategory === 'todos' || selectedCategory === cardCategory) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // 4. Copiar Email al portapapeles con notificación Toast (compatible con iframes y GitHub Pages)
+      const copyEmailBtn = document.getElementById('copy-email-btn');
+      const contactEmailText = document.getElementById('contact-email').textContent.trim();
+      const toast = document.getElementById('toast-notification');
+
+      function showToast() {
+        toast.classList.remove('translate-y-24', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-24', 'opacity-0');
+        }, 3200);
+      }
+
+      copyEmailBtn.addEventListener('click', () => {
+        // Método seguro mediante textarea temporal (funciona en todos los navegadores e iframes)
+        const tempInput = document.createElement('textarea');
+        tempInput.value = contactEmailText;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand('copy');
+          showToast();
+        } catch (err) {
+          console.error('Error al copiar el correo:', err);
+        }
+        document.body.removeChild(tempInput);
+      });
+
+      // 5. Animación suave de aparición al hacer scroll (Intersection Observer)
+      const revealElements = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealElements.forEach(el => revealObserver.observe(el));
+    });
+  </script>
+</body>
+</html>
